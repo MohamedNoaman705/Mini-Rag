@@ -1,3 +1,5 @@
+import chunk
+
 from .BaseDataModel import BaseDataModel
 from .db_schemes import DataChunk
 from .enums.DataBaseEnum import DataBaseEnum
@@ -17,27 +19,23 @@ class ChunkModel(BaseDataModel):
         return instance
 
     async def init_collection(self):
-        all_collection = await self.db_client.list_collection_names()
+        indexes = DataChunk.get_indexes()
 
-        if DataBaseEnum.COLLECTION_CHUNK_NAME.value not in all_collection:
-            self.collection = self.db_client[DataBaseEnum.COLLECTION_CHUNK_NAME.value]
-            indexes = DataChunk.get_indexes()
-
-            for index in indexes:
-                await self.collection.create_index(
-                    index["key"],
-                    name=index["name"],
-                    unique=index["unique"],
-                )
+        for index in indexes:
+            await self.collection.create_index(
+                index["key"],
+                name=index["name"],
+                unique=index["unique"],
+            )
 
 
 
     async def create_chunk(self, chunk: DataChunk):
 
         result = await self.collection.insert_one(
-            chunk.model_dump(by_alias=True, exclude_none=True)
+            chunk.model_dump(by_alias=True, exclude_unset=True)
         )
-        chunk._id = result.inserted_id
+        chunk.id = result.inserted_id
         return chunk
 
     async def get_chunk(self, chunk_id: str):
@@ -71,3 +69,19 @@ class ChunkModel(BaseDataModel):
         })
 
         return result.deleted_count
+
+    async def get_project_chunks(
+            self, project_id: ObjectId, page_no: int = 1, page_size: int = 100
+    ):
+        # Ensure page_no is at least 1 to prevent negative numbers
+        page_no = max(1, page_no)
+        skip_value = (page_no - 1) * page_size
+
+        records = (
+            await self.collection.find({"chunk_project_id": project_id})
+            .skip(skip_value)
+            .limit(page_size)
+            .to_list(length=None)
+        )
+
+        return [DataChunk(**record) for record in records]

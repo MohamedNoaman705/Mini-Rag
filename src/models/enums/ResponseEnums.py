@@ -11,3 +11,13 @@ class ResponseSignal(Enum):
 
     PROCESSING_FAILED = "Processing failed"
     PROCESSING_SUCCESSFULLY = "Processing successfully"
+
+    NO_FILES_ERROR = "No files found"
+    FILE_ID_ERROR = "No file id found"
+
+    PROJECT_NOT_FOUND = "Project not found"
+    INSERT_INTO_VECTORDB_ERROR = "Insert in vectordb failed"
+    INSERT_INTO_VECTORDB_SUCCESSFULLY = "Insert in vectordb successfully"
+    VECTOR_DB_COLLECTION_RETRIEVED = "VECTOR DB collection retrieved"
+    VECTOR_DB_SEARCH_ERROR = "VECTOR DB search failed"
+    VECTOR_DB_SEARCH_SUCCESSFULLY = "VECTOR DB search successfully"

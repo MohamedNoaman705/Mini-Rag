@@ -9,3 +9,6 @@ langchain-text-splitters==0.0.2
 langchain-community==0.0.38
 pymupdf==1.24.3
 motor>=3.6.0
+openai==1.35.13
+ollama==0.1.8
+qdrant-client==1.10.1
