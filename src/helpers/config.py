@@ -11,8 +11,14 @@ class Settings(BaseSettings):
     FILE_MAX_SIZE: int
     FILE_DEFAULT_CHUNK_SIZE: int
 
-    MONGODB_URL: str
-    MONGODB_DATABASE: str
+    # MONGODB_URL: str
+    # MONGODB_DATABASE: str
+
+    POSTGRES_USERNAME: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_HOST: str
+    POSTGRES_PORT: int
+    POSTGRES_MAIN_DATABASE: str
 
     GENERATION_BACKEND: str
     EMBEDDING_BACKEND: str
@@ -35,6 +41,7 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env")
 
+    DEFAULT_LANG: str = "en"
 
 def get_settings() -> Settings:
     return Settings()

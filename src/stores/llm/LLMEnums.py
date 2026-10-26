@@ -17,11 +17,6 @@ class OllamaEnum(Enum):
     ASSISTANT = "assistant"
     SYSTEM = "system"
 
-    DEFAULT_GENERATION_MODEL = "llama3"
-    DEFAULT_EMBEDDING_MODEL = "nomic-embed-text"
-
-    DEFAULT_API_URL = "http://localhost:11434"
-
 class DocumentTypeEnum(Enum):
     DOCUMENT = "document"
     QUERY = "query"

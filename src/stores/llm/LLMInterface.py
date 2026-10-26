@@ -12,7 +12,7 @@ class LLMInterface(ABC):
         pass
 
     @abstractmethod
-    def generate_test(self, prompt: str, chat_history: list[dict], max_output_token: Optional[int]=None,
+    def generate_text(self, prompt: str, chat_history: list[dict], max_output_token: Optional[int]=None,
                       temperature:  Optional[float]=None):
         pass
 

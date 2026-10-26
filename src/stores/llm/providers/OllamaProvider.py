@@ -7,12 +7,12 @@ import logging
 
 class OllamaProvider(LLMInterface):
 
-    def __init__(self, api_url: Optional[str] = OllamaEnum.DEFAULT_API_URL.value,
+    def __init__(self, api_url: Optional[str],
                  default_input_max_characters: int = 1000,
                  default_generation_max_output_tokens: int = 1000,
                  default_generation_temperature: float = 0.1):
 
-        self.api_url = api_url or OllamaEnum.DEFAULT_API_URL.value
+        self.api_url = api_url
         self.default_input_max_characters = default_input_max_characters
         self.default_generation_max_output_tokens = default_generation_max_output_tokens
         self.default_generation_temperature = default_generation_temperature
@@ -21,6 +21,7 @@ class OllamaProvider(LLMInterface):
         self.embedding_model_id = None
         self.embedding_size = None
 
+        self.enums = OllamaEnum
         # Use a bound client so the custom host is actually respected.
         self.client = ollama.Client(host=self.api_url)
 
@@ -36,7 +37,7 @@ class OllamaProvider(LLMInterface):
     def process_text(self, text: str):
         return text[:self.default_input_max_characters].strip()
 
-    def generate_test(self, prompt: str, chat_history: List[dict] = None,
+    def generate_text(self, prompt: str, chat_history: List[dict] = None,
                        max_output_token: Optional[int] = None,
                        temperature: Optional[float] = None):
         if not self.generation_model_id:
@@ -99,5 +100,5 @@ class OllamaProvider(LLMInterface):
     def construct_prompt(self, prompt: str, role: str):
         return {
             "role": role,
-            "content": self.process_text(prompt),
+            "content": prompt
         }
